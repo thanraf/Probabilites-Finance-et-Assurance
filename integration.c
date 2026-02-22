@@ -2,60 +2,186 @@
 
 #include "integration.h"
 
-// à garder ??*
 #include <string.h>
+#include <math.h>
 
 bool setQuadFormula(QuadFormula* qf, char* name)
 {
     int longueur = strlen(name);
 
-    if (strcmp(name, "left") == 0) { // rectangle gauche
-        qf->methode =1;
-        n = 0;
-        wk = 1;
-        xk = 0;
+    // ----- rectangle gauche -----
+    if (strcmp(name, "left") == 0) {
+        // On enregistre le nom de la méthode choisie dans la structure
+        strcpy(qf->name, name); 
+
+        // On définit le n de la structure
+        qf->n = 0;
+        
+        // Allocations en utilisant qf->n
+        qf->wk = malloc((qf->n + 1) * sizeof(double));
+        qf->xk = malloc((qf->n + 1) * sizeof(double));
+
+        if(qf->wk == NULL || qf->xk == NULL) {
+            return false;
+        }
+
+        // On remplit les cases
+        qf->wk[0] = 1.;
+        qf->xk[0] = 0.;
+    
         return true;
     }
-    else if (strcmp(name, "right") == 0) { // rectangle droit
-        qf->methode =2;
+
+    // ----- rectangle droit -----
+    else if (strcmp(name, "right") == 0) { 
+        // On enregistre le nom de la méthode choisie dans la structure
+        strcpy(qf->name, name); 
+        
+        // On définit le n de la structure
+        qf->n = 0;
+        
+        // Allocations en utilisant qf->n
+        qf->wk = malloc((qf->n + 1) * sizeof(double));
+        qf->xk = malloc((qf->n + 1) * sizeof(double));
+
+        if(qf->wk == NULL || qf->xk == NULL) {
+            return false;
+        }
+
+        // On remplit les cases
+        qf->wk[0] = 1.;
+        qf->xk[0] = 1.;
+
         return true;
     }
-    else if (strcmp(name, "middle") == 0) { // rectangle milieu
-        qf->methode =3;
-        n = 0;
-        wk = 1;
-        xk = 1/2;
+
+    // ----- rectangle milieu -----
+    else if (strcmp(name, "middle") == 0) {
+       // On enregistre le nom de la méthode choisie dans la structure
+        strcpy(qf->name, name); 
+        
+        // On définit le n de la structure
+        qf->n = 0;
+        
+        // Allocations en utilisant qf->n
+        qf->wk = malloc((qf->n + 1) * sizeof(double));
+        qf->xk = malloc((qf->n + 1) * sizeof(double));
+
+        if(qf->wk == NULL || qf->xk == NULL) {
+            return false;
+        }
+
+        // On remplit les cases
+        qf->wk[0] = 1.;
+        qf->xk[0] = 0.5;
+
         return true;
    }
-    else if (strcmp(name, "trapezes") == 0) { // trapeze
-        qf->methode =4;
-        n = 1;
-        *(w+k + 1)  = 1/2;
-        xk = 0;
+
+   // ----- trapeze -----
+    else if (strcmp(name, "trapezes") == 0) {
+       // On enregistre le nom de la méthode choisie dans la structure
+        strcpy(qf->name, name); 
+        
+        // On définit le n de la structure
+        qf->n = 1;
+        
+        // Allocations en utilisant qf->n
+        qf->wk = malloc((qf->n + 1) * sizeof(double));
+        qf->xk = malloc((qf->n + 1) * sizeof(double));
+
+        if(qf->wk == NULL || qf->xk == NULL) {
+            return false;
+        }
+
+        // On remplit les cases
+        qf->wk[0] = 0.5;
+        qf->wk[1] = 0.5;
+        qf->xk[0] = 1.;
+
         return true;
     }
-    else if (strcmp(name,"simpson")== 0) { // simpson
-        qf->methode = 5;
-        n = 0;
-        wk = 1;
-        xk = 0;
+
+    // ----- Simpson -----
+    else if (strcmp(name,"simpson")== 0) {
+       // On enregistre le nom de la méthode choisie dans la structure
+        strcpy(qf->name, name); 
+        
+        // On définit le n de la structure
+        qf->n = 2;
+        
+        // Allocations en utilisant qf->n
+        qf->wk = malloc((qf->n + 1) * sizeof(double));
+        qf->xk = malloc((qf->n + 1) * sizeof(double));
+
+        if(qf->wk == NULL || qf->xk == NULL) {
+            return false;
+        }
+
+        // On remplit les cases
+        qf->wk[0] = 1. / 6.;
+        qf->wk[1] = 2. / 3.;
+        qf->wk[2] = 1. / 6.;
+        qf->xk[0] = 0.;
+        qf->xk[1] = 0.5;
+        qf->xk[2] = 1.;
+
         return true;
     }
-    else if (strcmp(name,"gauss2")== 0) { // gauss 2 points
-        qf->methode = 6;
-        n = 0;
-        wk = 1;
-        xk = 0;
+
+    // ----- Gauss à 2 noeuds -----
+    else if (strcmp(name,"gauss2")== 0) {
+       // On enregistre le nom de la méthode choisie dans la structure
+        strcpy(qf->name, name); 
+        
+        // On définit le n de la structure
+        qf->n = 1;
+        
+        // Allocations en utilisant qf->n
+        qf->wk = malloc((qf->n + 1) * sizeof(double));
+        qf->xk = malloc((qf->n + 1) * sizeof(double));
+
+        if(qf->wk == NULL || qf->xk == NULL) {
+            return false;
+        }
+
+        // On remplit les cases
+        qf->wk[0] = 0.5;
+        qf->wk[1] = 0.5;
+        qf->xk[0] = 0.5 - ( 1. / (2. * sqrt(3.)) );
+        qf->xk[1] = 0.5 + ( 1. / (2. * sqrt(3.)) );
+        
         return true;
     }
-    else if (strcmp(name,"gauss3")== 0) { // gauss 3 points
-        qf->methode = 7;
-        return true;
-    }
-    else {
-        return false;
-    }
+
+    // ----- Gauss à 3 noeuds -----
+    else if (strcmp(name,"gauss3")== 0) {
+       // On enregistre le nom de la méthode choisie dans la structure
+        strcpy(qf->name, name); 
+        
+        // On définit le n de la structure
+        qf->n = 2;
+        
+        // Allocations en utilisant qf->n
+        qf->wk = malloc((qf->n + 1) * sizeof(double));
+        qf->xk = malloc((qf->n + 1) * sizeof(double));
+
+        if(qf->wk == NULL || qf->xk == NULL) {
+            return false;
+        }
+
+        // On remplit les cases
+        qf->wk[0] = 5. / 18.;
+        qf->wk[1] = 4. / 9.;
+        qf->wk[2] = 5. / 18.;
+        qf->xk[0] = 0.5 * (1. - sqrt(3. / 5.));
+        qf->xk[1] = 0.5;
+        qf->xk[2] = 0.5 * (1. + sqrt(3. / 5.));
+    }    
+
+    return false;
 }
+
 
 
 /* This function is not required ,but it may useful to debug */

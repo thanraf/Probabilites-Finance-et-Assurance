@@ -21,7 +21,6 @@ typedef struct{
   char name[20];
   double *wk;
   double *xk;
-  int methode;
   int n;
 /*pointeur double
 /*tous les wk on leurs fait un calcul avec f ai 
