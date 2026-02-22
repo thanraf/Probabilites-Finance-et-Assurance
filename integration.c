@@ -9,6 +9,14 @@ bool setQuadFormula(QuadFormula* qf, char* name)
 {
     int longueur = strlen(name);
 
+    // On libère l'ancienne méthode avant d'allouer la nouvelle
+    if (qf->wk != NULL) free(qf->wk);
+    if (qf->xk != NULL) free(qf->xk);
+
+    // On remet à NULL par sécurité
+    qf->wk = NULL; 
+    qf->xk = NULL;
+
     // ----- rectangle gauche -----
     if (strcmp(name, "left") == 0) {
         // On enregistre le nom de la méthode choisie dans la structure
@@ -177,6 +185,8 @@ bool setQuadFormula(QuadFormula* qf, char* name)
         qf->xk[0] = 0.5 * (1. - sqrt(3. / 5.));
         qf->xk[1] = 0.5;
         qf->xk[2] = 0.5 * (1. + sqrt(3. / 5.));
+
+        return true;
     }    
 
     return false;
@@ -187,8 +197,6 @@ bool setQuadFormula(QuadFormula* qf, char* name)
 /* This function is not required ,but it may useful to debug */
 void printQuadFormula(QuadFormula* qf)
 {
-    printf("Quadratic formula: %s\n", qf->name);
-
     printf("--- Quadrature Formula: %s ---\n", qf->name);
     printf("Degree (n): %d\n", qf->n); // On affiche n
 
@@ -240,14 +248,16 @@ double integrate(double (*f)(double), double a, double b, int N, QuadFormula* qf
 }
 
 
-double integrate_dx(double (*f)(double), double a, double b, double dx, QuadFormula* qf){
-
+double integrate_dx(double (*f)(double), double a, double b, double dx, QuadFormula* qf)
+{
     int N = round(fabs(b - a) / dx);
+    
     // Cas où N = 0
     if(N == 0) {
         N = 1;
     }
-    return 0.0;
+
+    return integrate(f, a, b, N, qf);
 }
 
 

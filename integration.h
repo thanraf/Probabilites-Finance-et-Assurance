@@ -18,18 +18,15 @@
    Have everything in this structure that will be needed by the function integrate.
 */
 typedef struct{
-  char name[20];
-  double *wk;
-  double *xk;
-  int n;
-/*pointeur double
-/*tous les wk on leurs fait un calcul avec f ai 
-  
-/* w_k x_k
-   /* Name of the quadrature formula. */
-                 /* (possible value: "left", "right", "middle", "trapezes", "simpson", "gauss2" or "gauss3") */
-  /* Add here other paramaters to the structure definition, that you may need for the integral function */
 
+   /* Name of the quadrature formula.
+          (possible value: "left", "right", "middle", "trapezes", "simpson", "gauss2" or "gauss3") */
+  char name[20];
+  
+   /* Add here other paramaters to the structure definition, that you may need for the integral function */
+   double *wk;
+   double *xk;
+   int n;
 } QuadFormula;
 
 #ifdef INTEGRATION_C
