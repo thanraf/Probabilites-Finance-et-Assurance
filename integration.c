@@ -187,11 +187,21 @@ bool setQuadFormula(QuadFormula* qf, char* name)
 /* This function is not required ,but it may useful to debug */
 void printQuadFormula(QuadFormula* qf)
 {
+    printf("Quadratic formula: %s\n", qf->name);
 
+    printf("--- Quadrature Formula: %s ---\n", qf->name);
+    printf("Degree (n): %d\n", qf->n); // On affiche n
 
-  printf("Quadratic formula: %s\n", qf->name);
+    // On parcourt les tableaux pour voir les valeurs mathématiques 
+    for (int i = 0; i <= qf->n; i++)
+    {
+        printf("  Point %d: xk = %f, wk = %f\n", i, qf->xk[i], qf->wk[i]);
+    }
+    printf("------------------------------\n");
+
   /* Print everything else that may be useful */
 }
+
 
 
 /* Approximate the integral of function f from a to b.
@@ -202,50 +212,42 @@ void printQuadFormula(QuadFormula* qf)
 */
 double integrate(double (*f)(double), double a, double b, int N, QuadFormula* qf)
 {
-    double a_i = a;
-    double b_i =0;
+    double largeur = (b - a) / N;
+    double a_i = 0.0;
+
     int i = 0;
-    double I = 0;
+    int k = 0;
 
-    while (i < N) {
-        
-        a_i = a + i * (b - a) / N;
-        b_i = a + (i + 1) * (b - a) / N;
-        
-        if (qf->methode == 1) {
-            I += f(a_i) * (b_i - a_i);
-        }
+    double sum = 0.0;
+    double res = 0.0;
 
-        if (qf-> methode == 2) {
-            I += f(b_i) * (b_i - a_i); 
-        }
-        
-        if (qf-> methode == 3) {
-            I +=  f((a_i + b_i) / 2) * (b_i - a_i);
-        }
+    while(i < N) {
+        a_i = a + i * largeur;
+        k = 0;
+        sum = 0.0;
 
-        if (qf->methode == 4) {
-            I +=  (1/2* f(a_i) + 1/2*f(b_i)) * (b_i - a_i); 
-        }
-
-        if (qf->methode == 5) {
-            I += (b_i -a_i) *(1/6 *f(a_i) +2/3*f((a_i + b_i)/2) + 1/6 *f(b_i));  
+        while(k <= qf->n) {
+            sum += qf->wk[k] * f(a_i + qf->xk[k] * largeur);
+            k++ ;
         }
         
-        if (qf->methode == 6) {
-            for 
-
-
-            
-         i++; 
+        res += sum; 
+        i++ ;
     }
-
-    return I;
-  
+    res = largeur * res; // largeur factorisée
+    
+    return res;
 }
 
+
 double integrate_dx(double (*f)(double), double a, double b, double dx, QuadFormula* qf){
-  return 0.0;
+
+    int N = round(fabs(b - a) / dx);
+    // Cas où N = 0
+    if(N == 0) {
+        N = 1;
+    }
+    return 0.0;
 }
 
 
