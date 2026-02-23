@@ -10,8 +10,12 @@ bool setQuadFormula(QuadFormula* qf, char* name)
     int longueur = strlen(name);
 
     // On libère l'ancienne méthode avant d'allouer la nouvelle
-    if (qf->wk != NULL) free(qf->wk);
-    if (qf->xk != NULL) free(qf->xk);
+    if (qf->wk != NULL) {
+        free(qf->wk);
+    }
+    if (qf->xk != NULL) {
+        free(qf->xk);
+    }
 
     // On remet à NULL par sécurité
     qf->wk = NULL; 
