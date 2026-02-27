@@ -1,15 +1,11 @@
 #define INTEGRATION_C
-
 #include "integration.h"
-
-#include <string.h>
-#include <math.h>
 
 bool setQuadFormula(QuadFormula* qf, char* name)
 {
     int longueur = strlen(name);
 
-    // On libère l'ancienne méthode avant d'allouer la nouvelle
+    // On libère l'ancienne méthodee avant d'allouer la nouvelle
     if (qf->wk != NULL) {
         free(qf->wk);
     }
@@ -201,16 +197,6 @@ bool setQuadFormula(QuadFormula* qf, char* name)
 /* This function is not required ,but it may useful to debug */
 void printQuadFormula(QuadFormula* qf)
 {
-    printf("--- Quadrature Formula: %s ---\n", qf->name);
-    printf("Degree (n): %d\n", qf->n); // On affiche n
-
-    // On parcourt les tableaux pour voir les valeurs mathématiques 
-    for (int i = 0; i <= qf->n; i++)
-    {
-        printf("  Point %d: xk = %f, wk = %f\n", i, qf->xk[i], qf->wk[i]);
-    }
-    printf("------------------------------\n");
-
   /* Print everything else that may be useful */
 }
 

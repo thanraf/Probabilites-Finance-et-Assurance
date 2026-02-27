@@ -1,5 +1,3 @@
-
-
 // #define GRAPHIC
 
 #define PFA_C
@@ -14,9 +12,24 @@
           interval [a,b], when computing the integration.
           The number of subdivisions will be N such that (b-a)/N ~ dt
 */
+
+// Variables globales
+QuadFormula pfaQF;  // La méthode de quadrature
+double pfa_dt;      // Le pas de temps
+
+  
 bool init_integration(char* quadrature, double dt)
-{ 
-  return true;
+{
+    if (dt <= 0.0) {
+        return false;
+    }
+
+    pfa_dt = dt;
+
+    pfaQF.xk = NULL;
+    pfaQF.wk = NULL;
+
+    return setQuadFormula(&pfaQF, quadrature);
 }
 
 
@@ -30,7 +43,7 @@ double phi(double x)
 /* Cumulative distribution function of the normal distribution */
 double PHI(double x)
 {
-  return 0.0;
+    return 0.5 + integrate_dx(phi, 0, x, pfa_dt, &pfaQF);
 }
 
 /* =====================================
