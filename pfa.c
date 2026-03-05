@@ -30,28 +30,31 @@ bool init_integration(char* quadrature, double dt)
     pfaQF.wk = NULL;
 
     return setQuadFormula(&pfaQF, quadrature);
-}
-
+} 
 
 
 /* Density of the normal distribution */
 double phi(double x)
 {
-  return 0.398942280401433 * exp( -x*x/2 );
+	return 0.398942280401433 * exp( -x*x/2 );
 }
+
 
 /* Cumulative distribution function of the normal distribution */
 double PHI(double x)
 {
-    return 0.5 + integrate_dx(phi, 0, x, pfa_dt, &pfaQF);
+	return 0.5 + integrate_dx(phi, 0, x, pfa_dt, &pfaQF);
 }
+
 
 /* =====================================
    Finance function: price of an option 
 */
 double optionPrice(Option* option)
 {
-  return 0.0;
+
+
+	return 0.0;
 }
 
 
