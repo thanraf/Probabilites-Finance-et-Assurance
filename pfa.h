@@ -43,11 +43,13 @@ typedef struct{
   double* p;
 } InsuredClient;
 
+
 #ifdef PFA_C
 
 /* Global variables (only visible in pfa.c) for the integration computations */
 QuadFormula pfaQF;
 double pfa_dt;
+
 
 #else
 /* Initialize the integration variables.
