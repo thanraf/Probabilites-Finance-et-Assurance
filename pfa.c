@@ -38,9 +38,19 @@ double phi(double x)
 /* Cumulative distribution function of the normal distribution */
 double PHI(double x)
 {
-	return 0.5 + integrate_dx(phi, 0, x, pfa_dt, &pfaQF);
-}
+    if (x == 0.0) {
+        return 0.5;
+   }
 
+    if (x > 0.0) {
+        return 0.5 + integrate_dx(phi, 0.0, x, pfa_dt, &pfaQF);
+    }
+	
+	else {
+		double valeur_absolue = -x;
+    	return 0.5 - integrate_dx(phi, 0.0, valeur_absolue, pfa_dt, &pfaQF);
+	}
+}
 
 /* =====================================
    Finance function: price of an option 
@@ -52,6 +62,10 @@ double optionPrice(Option* option)
     double T   = option->T;
     double mu  = option->mu;
     double sig = option->sig;
+
+	if (sig <= 0.0 || T <= 0.0 || S0 <= 0.0 || K <= 0.0) {
+		return 0.0;
+	}
 
     // Calcul de sigma * sqrt(T)
     double sig_sqrt_T = sig * sqrt(T);
@@ -89,7 +103,7 @@ double clientPDF_X(InsuredClient* client, double x)
     double m = client->m;
     double s = client->s;
 
-    if (s <= 0) {
+    if (s <= 0.0) {
       return 0.0;
     }
 
@@ -112,7 +126,7 @@ double clientCDF_X(InsuredClient* client, double x)
     double m = client->m;
     double s = client->s;
 
-   if (s <= 0) {
+   if (s <= 0.0) {
       return 0.0;
    }
 
